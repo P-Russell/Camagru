@@ -1,8 +1,12 @@
 <html>
 	<head>
-		<title>Database</title>
+		<title>Camagru</title>
 		<link href="css/style.css" rel="stylesheet">
-		<link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
 	</head>
 	<body>
-		<h1>Simple Database App</h1>
+		<ul class="menu_ul" id="menu">
+			<li class="menu_li"><a href="index.php">Home</a></li>
+			<li class="menu_li"><a href="signin.php">Signin</a></li>
+			<li class="menu_li"><a href="signup.php">Signup</a></li>
+ 		</ul>
+		<h1>Camagru</h1>

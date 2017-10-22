@@ -2,7 +2,81 @@ label {
 	display: block;
 	margin: 5px 0;
 }
-div {
-	border-style: solid;
-    border-color: red;
+
+.menu_ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.menu_li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+.active {
+    background-color: #4CAF50;
+}
+
+div.stock_gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    width: 180px;
+    display: inline-block;
+}
+
+div.stock_gallery:hover {
+    border: 1px solid #777;
+}
+
+div.stock_gallery img {
+    width: 160;
+    height: 121;
+    margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+div.home_gallery {
+    margin: 5px;
+    border: 1px solid #ccc;
+    width: 320;
+    height: 242;
+    display: block;
+}
+
+div.home_gallery:hover {
+    border: 1px solid #777;
+}
+
+.home_gallery_img {
+    width: 320;
+    height: 242;
+}
+
+.comments {
+    float: left;
+}
+
+.gallary_image {
+    float: right;
+}
+
+.side {
+    min-height: 500px;
+    width: 50%;
+    background-color: powderblue;
+    float: right;
 }

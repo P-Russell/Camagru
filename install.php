@@ -1,16 +1,17 @@
 <?PHP
-include ("config.php");
-$con = new mysqli($host, $username, $password);
 
-if ($con->connect_errno) {
-	die("Connection failed: " .$connection->error);
+require "config.php";
+
+try 
+{
+	$connection = new PDO("mysql:host=$host", $username, $password, $options);
+	$sql = file_get_contents("data/init.sql");
+	$connection->exec($sql);
+	$connection = NULL;
+	echo "Database and tables created successfully.";
 }
-$sql_init = file_get_contents("data/init.sql");
-
-if (!$con->multi_query($sql_init))
-	echo ("database creation failed (". $con->errno . ") " . $con->error);
-else
-	echo "Database and table users created successfully";
-
-$connection->close();
+catch(PDOException $error)
+{
+	echo $sql . "<br>" . $error->getMessage();
+}
 ?>

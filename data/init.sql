@@ -1,15 +1,37 @@
-DROP DATABASE if EXISTS test_db;
+DROP DATABASE if EXISTS camagru;
 
-CREATE DATABASE test_db;
+CREATE DATABASE camagru;
 
-use test_db;
+use camagru;
 
 CREATE TABLE users (
 	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	firstname VARCHAR(30) NOT NULL,
-	lastname VARCHAR(30) NOT NULL,
+	username VARCHAR(30) NOT NULL,
 	email VARCHAR(50) NOT NULL,
-	age INT(3),
-	location VARCHAR(50),
-	start_date TIMESTAMP
+	password VARCHAR(128) NOT NULL,
+	start_date TIMESTAMP,
+	token VARCHAR( 32 ) NOT NULL,
+	active INT( 1 ) NOT NULL DEFAULT '0'
+);
+
+CREATE TABLE comments (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(30) NOT NULL,
+	user_comment VARCHAR(140) NOT NULL,
+	image_name VARCHAR(140) NOT NULL,
+	created TIMESTAMP
+);
+
+CREATE TABLE images (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(30) NOT NULL,
+	image_name VARCHAR(140) NOT NULL,
+	created TIMESTAMP
+);
+
+CREATE TABLE likes (
+	id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	username VARCHAR(30) NOT NULL,
+	image_name VARCHAR(140) NOT NULL,
+	created TIMESTAMP
 );
