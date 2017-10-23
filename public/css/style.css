@@ -75,8 +75,15 @@ div.home_gallery:hover {
 }
 
 .side {
-    min-height: 500px;
-    width: 50%;
+    min-height: 1200px;
+    width: 30%;
+    max-width: 350px;
     background-color: powderblue;
     float: right;
+    border: 2px solid black;
+}
+.side img{
+    width: 160;
+    height: 121;
+    padding : 5px;
 }

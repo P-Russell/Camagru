@@ -42,19 +42,37 @@ function get_likes($image)
     }
 }
 
-$dirname = "images/user/";
-$images = glob($dirname."*.png");
+function get_images()
+{
+    require "config.php";
+    try
+    {
+        $connection = new PDO($dsn, $username, $password, $options);
+        $sql = "SELECT * FROM images ORDER BY created desc";
+        $statement = $connection->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        $connection = null;
+        return ($results);
+    }
+    catch(PDOException $error)
+    {
+        echo $sql . "<br>" . $error->getMessage();
+    }
+}
 
-if (isset($_SESSION['username']) && $images)
+$images = get_images();
+
+if (isset($_SESSION['username']))
 {
     echo "<table>";
     foreach($images as $image) {
-        $comments = get_comments($image);
-        $likes = get_likes($image);
+        $comments = get_comments($image['image_name']);
+        $likes = get_likes($image['image_name']);
         $total_likes = sizeof($likes);
         echo '
         <tr>
-            <th><img class="home_gallery_img" src=' . $image . '></th>
+            <th><img class="home_gallery_img" src=' . substr($image['image_name'], 9) . '></th>
             <th valign="top" align="left">
             <h4>Comments:</h4>
             <ul>';
@@ -64,7 +82,7 @@ if (isset($_SESSION['username']) && $images)
             echo '
             </ul>
             <form method="post" action="newcomment.php">
-            <input type="hidden" name="image_name" value=' . $image . '>
+            <input type="hidden" name="image_name" value=' . $image['image_name'] . '>
             <button type="submit" value="New Comment">
             New Comment
             </button>
@@ -79,7 +97,7 @@ if (isset($_SESSION['username']) && $images)
             echo '
             </ul>
             <form method="post" action="like.php">
-            <input type="hidden" name="image_name" value=' . $image . '>
+            <input type="hidden" name="image_name" value=' . $image['image_name'] . '>
             <button type="submit" name="submit" value="like">
             Like!
             </button>
@@ -92,13 +110,14 @@ if (isset($_SESSION['username']) && $images)
 }
 else if ($images) {
     echo "<table>";
+    $images = get_images();
     foreach($images as $image) {
-        $comments = get_comments($image);
-        $likes = get_likes($image);
+        $comments = get_comments($image['image_name']);
+        $likes = get_likes($image['image_name']);
         $total_likes = sizeof($likes);
         echo '
         <tr>
-            <th><img class="home_gallery_img" src=' . $image . '></th>
+            <th><img class="home_gallery_img" src=' . substr($image['image_name'], 9) . '></th>
             <th valign="top" align="left">
             <h4>Comments:</h4>
             <ul>';

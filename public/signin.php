@@ -106,7 +106,4 @@ if (isset($_POST['reset']))
 	<input type="submit" name="reset" value="reset">
 </form>
 <br><br>
-
-<a href="index.php">Back to home</a>
-
 <?php include "templates/footer.php"; ?>

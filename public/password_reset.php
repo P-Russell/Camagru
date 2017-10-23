@@ -47,7 +47,8 @@ if (isset($_POST['reset']))
 			$sql = "UPDATE users SET password = :password WHERE email = :email";
 			$statement = $connection->prepare($sql);
 			$statement->execute($user);
-            $connection = NULL;
+			$connection = NULL;
+			header('location: signin.php');
             echo "password updated";
 		}
 		catch(PDOException $error)
@@ -69,7 +70,7 @@ if (isset($_POST['reset']))
 
 <form method="post">
 	<label for="newpass">New Password</label>
-	<input type="text" name="newpass" id="newpass">
+	<input type="password" name="newpass" id="newpass">
 	<input type="submit" name="reset" value="reset">
 </form>
 <br><br>

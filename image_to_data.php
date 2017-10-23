@@ -4,7 +4,6 @@ require "common.php";
 
 session_start();
 
-
 if (isset($_POST['image']) && !empty($_POST['image']) && isset($_SESSION['username'])) 
 {
     $i = 1;

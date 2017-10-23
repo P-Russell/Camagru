@@ -1,6 +1,8 @@
 <?php include "templates/header.php"; ?>
 <?php
 require "../common.php";
+require "../email.php";
+
 session_start();
 if (isset($_SESSION['username']) && !empty($_SESSION['username']))
 {
@@ -12,7 +14,6 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username']))
     {
         ?>
         <script>
-        console.log("Hello there");
         var new_li = document.createElement('li');
         new_li.className = 'menu_li';
         new_li.innerHTML = '<a href="log_out.php">Log Out</a>';
@@ -30,22 +31,33 @@ if (isset($_SESSION['username']) && !empty($_SESSION['username']))
     echo "<p> You need to be loggen in to comment </p>";
 }
 
-
-
 if (isset($_POST['submit']) && $_POST['submit'] == "Submit" && !empty($_POST['comment']))
 {
     $comment = escape($_POST['comment']);
     require "../config.php";
-    try{
+    try {
         $connection = new PDO($dsn, $username, $password, $options);
         $sql = "INSERT INTO comments (username, user_comment, image_name) VALUES
         (:username, :user_comment, :image_name)";
         $statement = $connection->prepare($sql);
-        $statement->execute([
-            'username' => $_SESSION['username'],
-            'user_comment' => $comment,
-            'image_name' => $_SESSION['image']
-            ]);
+        $userFrom = [
+                'username' => $_SESSION['username'],
+                'user_comment' => $comment,
+                'image_name' => $_SESSION['image']
+        ];
+        $statement->execute($userFrom);
+        $sql = "SELECT * FROM images WHERE image_name = :image_name";
+        $statement = $connection->prepare($sql);
+        $statement->execute(['image_name' => $_SESSION['image']]);
+        $result = $statement->fetch();
+        $userTo = ['username' => $result['username']];
+        $sql = "SELECT * FROM users WHERE username = :username";
+        $statement = $connection->prepare($sql);
+        $statement->execute($userTo);
+        $result = $statement->fetch();
+        $userTo['email'] = $result['email'];
+        $userTo['image_title'] = $_SESSION['image'];
+        send_comment_email($userTo, $userFrom);
         $connection = null;
         $_SESSION['image_name'] = null;
         header('Location: index.php');
@@ -55,15 +67,11 @@ if (isset($_POST['submit']) && $_POST['submit'] == "Submit" && !empty($_POST['co
     }
 }
 
-
 ?>
-
 <form method="post" id="new">
     <label for="Comment">Comment</label>
     <textarea name="comment" rows="4" cols="50" form="new">Enter text here...</textarea>
 	<input style = "display: block;" type="submit" name="submit" value="Submit">
 </form>
-
-<a href="index.php">Back to home</a>
 
 <?php include "templates/footer.php"; ?>
