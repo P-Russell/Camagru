@@ -1,69 +1,15 @@
 <?php
+require "get_from_db.php";
+require "pagination.php";
 
-function get_comments($image)
-{
-    $image = escape($image);
-    require "config.php";
-    try
-    {
-        $connection = new PDO($dsn, $username, $password, $options);
-        $sql = "SELECT * FROM comments WHERE image_name = :image
-        ORDER BY created desc LIMIT 3";
-        $statement = $connection->prepare($sql);
-        $statement->execute(['image' => $image]);
-        $results = $statement->fetchAll();
-        $connection = null;
-        return ($results);
-    }
-    catch(PDOException $error)
-    {
-        echo $sql . "<br>" . $error->getMessage();
-    }
-}
+$startArticles = ($_GET['page'] - 1) * $articlesPerPage;
+$images = get_images($startArticles, $articlesPerPage);
 
-function get_likes($image)
-{
-    $image = escape($image);
-    require "config.php";
-    try
-    {
-        $connection = new PDO($dsn, $username, $password, $options);
-        $sql = "SELECT * FROM likes WHERE image_name = :image_name
-        ORDER BY created desc";
-        $statement = $connection->prepare($sql);
-        $statement->execute(['image_name' => $image]);
-        $results = $statement->fetchAll();
-        $connection = null;
-        return ($results);
-    }
-    catch(PDOException $error)
-    {
-        echo $sql . "<br>" . $error->getMessage();
-    }
-}
 
-function get_images()
-{
-    require "config.php";
-    try
-    {
-        $connection = new PDO($dsn, $username, $password, $options);
-        $sql = "SELECT * FROM images ORDER BY created desc";
-        $statement = $connection->prepare($sql);
-        $statement->execute();
-        $results = $statement->fetchAll();
-        $connection = null;
-        return ($results);
-    }
-    catch(PDOException $error)
-    {
-        echo $sql . "<br>" . $error->getMessage();
-    }
-}
+?>
 
-$images = get_images();
-
-if (isset($_SESSION['username']))
+<?php
+if (isset($_SESSION['username']) && $images)
 {
     echo "<table>";
     foreach($images as $image) {
@@ -72,7 +18,7 @@ if (isset($_SESSION['username']))
         $total_likes = sizeof($likes);
         echo '
         <tr>
-            <th><img class="home_gallery_img" src=' . substr($image['image_name'], 9) . '></th>
+            <th><img class="home_gallery_img" src=' . substr($image['image_name'], 2) . '></th>
             <th valign="top" align="left">
             <h4>Comments:</h4>
             <ul>';
@@ -110,14 +56,13 @@ if (isset($_SESSION['username']))
 }
 else if ($images) {
     echo "<table>";
-    $images = get_images();
     foreach($images as $image) {
         $comments = get_comments($image['image_name']);
         $likes = get_likes($image['image_name']);
         $total_likes = sizeof($likes);
         echo '
         <tr>
-            <th><img class="home_gallery_img" src=' . substr($image['image_name'], 9) . '></th>
+            <th><img class="home_gallery_img" src=' . substr($image['image_name'], 2) . '></th>
             <th valign="top" align="left">
             <h4>Comments:</h4>
             <ul>';

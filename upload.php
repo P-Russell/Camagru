@@ -1,5 +1,5 @@
 <?php
-$target_dir = "./public/images/user";
+$target_dir = "./public/images/user/";
 $index = 1;
 while (file_exists($target_dir . $index . basename($_FILES["fileToUpload"]["name"]))) {
     $index++;
@@ -45,7 +45,7 @@ if ($uploadOk == 0) {
     }
 }
 
-require "config.php";
+require "config/database.php";
 require "common.php";
 
 session_start();
@@ -88,5 +88,5 @@ if ($uploadOk && isset($_SESSION['username']) && isset($_POST['stock_image1']))
         echo $sql . "<br>" . $error->getMessage();
     }
 }
-header("location: public/new_image.php");
+header("location: new_image.php");
 ?>

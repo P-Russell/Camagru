@@ -1,11 +1,10 @@
 <?php
-require "config.php";
+require "config/database.php";
 require "common.php";
 session_start();
 if (isset($_POST['image']))
 {
     $image = '.' . substr($_POST['image'], 29);
-    echo $image;
     try
     {
         $connection = new PDO($dsn, $username, $password, $options);
@@ -17,12 +16,12 @@ if (isset($_POST['image']))
             'username' => $_SESSION['username']
             ]);
         $connection = null;
+        unlink($image);
+        header('location: new_image.php');
     }
     catch(PDOException $error)
     {
         echo $sql . "<br>" . $error->getMessage();
     }
-    unlink($image);
-    header('location: public/new_image.php');
-}
+ }
 ?>

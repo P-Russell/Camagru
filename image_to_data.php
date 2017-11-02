@@ -1,5 +1,5 @@
 <?php
-require "config.php";
+require "config/database.php";
 require "common.php";
 
 session_start();
@@ -13,7 +13,7 @@ if (isset($_POST['image']) && !empty($_POST['image']) && isset($_SESSION['userna
         $i++;
     }
 	$b64 = $_POST['image'];
-	$b64 = substr($b64, 22); //removes: data:image/png;base64
+	$b64 = substr($b64, 22); //removes: config:image/png;base64
 	$num = 1;
 	$file_name =  "./public/images/user/" . $_SESSION['username'] . $num . ".png";
 	while (file_exists($file_name)) {
@@ -53,5 +53,5 @@ if (isset($_POST['image']) && !empty($_POST['image']) && isset($_SESSION['userna
         echo $sql . "<br>" . $error->getMessage();
     }
 }
-header("location: public/new_image.php");
+header("location: new_image.php");
 ?>

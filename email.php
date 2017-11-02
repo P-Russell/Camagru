@@ -14,7 +14,7 @@ function send_verification_email($user)
         <body>
           Hello ' . $user['username'] . ' </br>
           Click the link to validate your email </br>
-          <a href="http://localhost:8080/camagru/public/new_user_welcome.php?token=' . $user['token'] . '&email=' . 
+          <a href="http://localhost:8080/camagru/new_user_welcome.php?token=' . $user['token'] . '&email=' .
           $user['email'] . '">Verify email</a>
         </body>
       </html>
@@ -40,7 +40,7 @@ function send_password_email($user)
         <body>
           Hello ' . $user['username'] . ' </br>
           Click the link to reset your password </br>
-          <a href="http://localhost:8080/camagru/public/password_reset.php?token=' . $user['token'] . '&email=' . 
+          <a href="http://localhost:8080/camagru/password_reset.php?token=' . $user['token'] . '&email=' .
           $user['email'] . '">Verify email</a>
         </body>
       </html>
@@ -65,8 +65,8 @@ function send_comment_email($userTo, $userFrom)
         </head>
         <body>
           Hello ' . $userTo['username'] . ' </br>
-          User ' . $userFrom['username']. ' said some BS bout your picture '. $userTo['image_title'].'</br>
-          They said ' . $userFrom['user_comment'] . ' <br>
+          User ' . $userFrom['username']. ' said some BS bout your picture '. substr($userTo['image_title'], 21).'</br>
+          They said "' . $userFrom['user_comment'] . '" <br>
           nice eh? <br><br>
           Cheers!
         </body>
