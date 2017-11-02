@@ -1,0 +1,1 @@
+add images with alphachannel to this directory
